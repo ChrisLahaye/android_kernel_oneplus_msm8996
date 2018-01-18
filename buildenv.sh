@@ -20,7 +20,11 @@ fi
 if [ ! -d ".vendor" ]; then
   mkdir .vendor
 
-  echo Installing gcc
+  echo Installing AnyKernel2...
+  mkdir .vendor/AnyKernel2
+  git clone git@github.com:MSF-Jarvis/AnyKernel2.git .vendor/AnyKernel2
+
+  echo Building gcc...
   mkdir .vendor/gcc
   git clone git@github.com:nathanchance/build-tools-gcc.git .vendor/gcc
   (cd .vendor/gcc && .build -a arm64 -s gnu -v 7 -V)
@@ -28,7 +32,7 @@ if [ ! -d ".vendor" ]; then
   echo Installing mkbootimg...
   mkdir .vendor/mkbootimg
   curl -L --progress https://android.googlesource.com/platform/system/core/+archive/master/mkbootimg.tar.gz \
-  | tar xzf - -C .vendor/mkbootimg
+    | tar xzf - -C .vendor/mkbootimg
 fi
 
 export TOP=`readlink -f $(dirname "$0")`
