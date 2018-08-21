@@ -22,8 +22,8 @@ if [ ! -d ".vendor" ]; then
 
   echo Installing gcc
   mkdir .vendor/gcc
-  curl -L --progress https://raw.githubusercontent.com/nathanchance/gcc-prebuilts/tarballs-7.x/aarch64-gnu-linux-android.tar.xz \
-  | tar xJf - -C .vendor/gcc --strip-components=1
+  git clone git@github.com:nathanchance/build-tools-gcc.git .vendor/gcc
+  (cd .vendor/gcc && .build -a arm64 -s gnu -v 7 -V)
 
   echo Installing mkbootimg...
   mkdir .vendor/mkbootimg
@@ -34,7 +34,7 @@ fi
 export TOP=`readlink -f $(dirname "$0")`
 export ARCH=arm64
 export CCACHE_DIR=.ccache
-export CROSS_COMPILE=$TOP/.vendor/gcc/bin/aarch64-gnu-linux-android-
+export CROSS_COMPILE=$TOP/.vendor/gcc/aarch64-linux-gnu/bin/aarch64-linux-gnu-
 export OUT=/tmp/out
 export MAKEFLAGS="-j`expr $(nproc) \* 2` O=$OUT"
 export USE_CCACHE=1
