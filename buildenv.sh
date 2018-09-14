@@ -24,10 +24,15 @@ if [ ! -d ".vendor" ]; then
   mkdir .vendor/AnyKernel2
   git clone git@github.com:MSF-Jarvis/AnyKernel2.git .vendor/AnyKernel2
 
-  echo Building gcc...
+  echo Installing GCC toolchain build script...
   mkdir .vendor/gcc
   git clone git@github.com:nathanchance/build-tools-gcc.git .vendor/gcc
+
+  echo Building GCC for arm64...
   (cd .vendor/gcc && .build -a arm64 -s gnu -v 7 -V)
+
+  echo Building GCC for arm...
+  (cd .vendor/gcc && .build -a arm -s gnu -v 7 -V)
 
   echo Installing mkbootimg...
   mkdir .vendor/mkbootimg
@@ -39,6 +44,7 @@ export TOP=`readlink -f $(dirname "$0")`
 export ARCH=arm64
 export CCACHE_DIR=.ccache
 export CROSS_COMPILE=$TOP/.vendor/gcc/aarch64-linux-gnu/bin/aarch64-linux-gnu-
+export CROSS_COMPILE_ARM32=$TOP/.vendor/gcc/arm-linux-gnueabi/bin/arm-linux-gnueabi-
 export OUT=/tmp/out
 export MAKEFLAGS="-j`expr $(nproc) \* 2` O=$OUT"
 export USE_CCACHE=1
