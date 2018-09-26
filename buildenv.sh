@@ -25,14 +25,14 @@ if [ ! -d ".vendor" ]; then
   git clone git@github.com:MSF-Jarvis/AnyKernel2.git .vendor/AnyKernel2
 
   echo Installing GCC toolchain build script...
-  mkdir .vendor/gcc
-  git clone git@github.com:nathanchance/build-tools-gcc.git .vendor/gcc
+  mkdir .vendor/build-tools-gcc .vendor/gcc
+  git clone git@github.com:nathanchance/build-tools-gcc.git .vendor/build-tools-gcc
 
   echo Building GCC for arm64...
-  (cd .vendor/gcc && .build -a arm64 -s gnu -v 7 -V)
+  (cd .vendor/build-tools-gcc && ./build -a arm64 -s gnu -v 7 -V && cp -r aarch64-linux-gnu ../gcc)
 
   echo Building GCC for arm...
-  (cd .vendor/gcc && .build -a arm -s gnu -v 7 -V)
+  (cd .vendor/build-tools-gcc && ./build -a arm -s gnu -v 7 -V && cp -r arm-linux-gnueabi ../gcc)
 
   echo Installing mkbootimg...
   mkdir .vendor/mkbootimg
